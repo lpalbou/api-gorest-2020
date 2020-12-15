@@ -1,11 +1,12 @@
 {
-    "name": "express-HelloWorld",
-    "description": "Hello World ExpressJS WebService",
+    "name": "api-gorest",
+    "description": "API to access GO and GO-CAM data from the Gene Ontology Consortium",
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "aws-serverless-express": "3.1.3",
         "express": "4.16.2",
-        "aws-serverless-express": "3.1.3"
+        "request": "^2.88.2"
     },
     "devDependencies": {
         "mocha": "5.0.0",
@@ -14,5 +15,14 @@
     },
     "scripts": {
         "test": "mocha --recursive tests"
-    }
+    },
+    "keywords": [
+        "Gene Ontology",
+        "GO",
+        "API",
+        "REST",
+        "SAM"
+    ],
+    "author": "Laurent-Philippe Albou",
+    "license": "BSD"
 }
