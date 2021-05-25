@@ -2,6 +2,9 @@ var separator = require("../config").separator;
 
 module.exports = {
 
+    /**
+     * Retrieve all models and describe their Gene Products
+     */
     getAllGPsModels() {
         var encoded = encodeURIComponent(`
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -30,6 +33,10 @@ module.exports = {
         return "?query=" + encoded;
     },
 
+    /**
+     * Retrieve all models for a given Gene Product
+     * @param {*} id Gene Product IRI (e.g. http://identifiers.org/zfin/ZDB-GENE-000403-1)
+     */
     getGPModels(id) {
         var encoded = encodeURIComponent(`
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
