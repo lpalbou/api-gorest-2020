@@ -59,6 +59,7 @@ module.exports = {
           }
         
         }
+        ORDER BY ?gocam
         `);
         return "?query=" + encoded;
     },

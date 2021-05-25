@@ -48,8 +48,8 @@ app.get('/models', function(req, res) {
   } else if(req.query.pmid) {
     utils.fetchAndSend(res, sparqlPMIDs.PMIDModelList(req.query.pmid), false, keysArrayModels);
   // // send the models with at least 2 causal MF-MFs (recent addition, code below would have to be clean and merge with new API)
-  // } else if(req.query.causalmf) {
-  //   utils.fetchAndSend(res, sparqlModels.ModelsWith2CausalMFs(req.query.causalmf), false);
+  } else if(req.query.causalmf) {
+    utils.fetchAndSend(res, sparqlModels.ModelsWith2CausalMFs(req.query.causalmf), false);
 
     // send all models
   } else {
@@ -207,8 +207,9 @@ app.get('/association/between/:subject/:object', function(req, res) {
 // ================================================================================
 
 app.get('/gp/:id/models', function(req, res) {
-  if(req.params.causalmf) {
-    utils.fetchAndSend(res, sparqlGPs.getGPModelsWith2CausalMFs(req.param.id));
+  console.log("PARAMS: " , req.params);
+  if(req.query.causalmf) {
+    utils.fetchAndSend(res, sparqlGPs.getGPModelsWith2CausalMFs(req.params.id));
   } else {
     utils.fetchAndSend(res, sparqlGPs.getGPModels(req.params.id));
   }

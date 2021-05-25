@@ -381,7 +381,7 @@ module.exports = {
             ?ind3 rdf:type MF:
           }
         }        
-        GROUP BY ?gocam
+        ORDER BY ?gocam
         `);        
         return "?query=" + encoded;
     }
