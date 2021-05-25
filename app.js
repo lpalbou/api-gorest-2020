@@ -47,9 +47,9 @@ app.get('/models', function(req, res) {
   // send the <pmid> models
   } else if(req.query.pmid) {
     utils.fetchAndSend(res, sparqlPMIDs.PMIDModelList(req.query.pmid), false, keysArrayModels);
-  // send the models with at least 2 causal MF-MFs (recent addition, code below would have to be clean and merge with new API)
-  } else if(req.query.causalmf) {
-    utils.fetchAndSend(res, sparqlModels.ModelsWith2CausalMFs(req.query.causalmf), false);
+  // // send the models with at least 2 causal MF-MFs (recent addition, code below would have to be clean and merge with new API)
+  // } else if(req.query.causalmf) {
+  //   utils.fetchAndSend(res, sparqlModels.ModelsWith2CausalMFs(req.query.causalmf), false);
 
     // send all models
   } else {
@@ -207,7 +207,11 @@ app.get('/association/between/:subject/:object', function(req, res) {
 // ================================================================================
 
 app.get('/gp/:id/models', function(req, res) {
-  utils.fetchAndSend(res, sparqlGPs.getGPModels(req.params.id));
+  if(req.params.causalmf) {
+    utils.fetchAndSend(res, sparqlGPs.getGPModelsWith2CausalMFs(req.param.id));
+  } else {
+    utils.fetchAndSend(res, sparqlGPs.getGPModels(req.params.id));
+  }
 });
 
 
@@ -229,3 +233,9 @@ app.get('/pmid/:id/models', function(req, res) {
 
 // Export your Express configuration so that it can be consumed by the Lambda handler
 module.exports = app
+
+// Uncomment if want to perform local test
+// var port = 8888;
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`)
+// })
