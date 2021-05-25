@@ -29,12 +29,9 @@ var utils = require('./utils');
 //
 // ================================================================================
 
+
 keysArrayModels = ["orcids", "names", "groupids", "groupnames"];
 app.get('/models', function(req, res) {
-  // send the models with at least 2 causal MF-MFs (recent addition, code below would have to be clean and merge with new API)
-  if(req.query.causalmf) {
-    utils.fetchAndSend(res, sparqlModels.ModelsWith2CausalMFs(req.query.causalmf), false);
-  }
   // send a range of models (start, start + size)
   if(req.query.start && req.query.size) {
     utils.fetchAndSend(res, sparqlModels.ModelList(req.query.start, req.query.size), false, keysArrayModels);
@@ -50,8 +47,11 @@ app.get('/models', function(req, res) {
   // send the <pmid> models
   } else if(req.query.pmid) {
     utils.fetchAndSend(res, sparqlPMIDs.PMIDModelList(req.query.pmid), false, keysArrayModels);
-  
-  // send all models
+  // send the models with at least 2 causal MF-MFs (recent addition, code below would have to be clean and merge with new API)
+  } else if(req.query.causalmf) {
+    utils.fetchAndSend(res, sparqlModels.ModelsWith2CausalMFs(req.query.causalmf), false);
+
+    // send all models
   } else {
     utils.fetchAndSend(res, sparqlModels.ModelList(), false, keysArrayModels);
   }
