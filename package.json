@@ -6,13 +6,8 @@
     "dependencies": {
         "aws-serverless-express": "3.1.3",
         "bbop-core": "0.0.5",
-        "bbop-graph-noctua": "0.0.35",
-        "bbop-manager-minerva": "0.0.20",
-        "bbop-response-barista": "0.0.11",
         "express": "4.16.2",
-        "lpdev-bbop-rest-manager": "0.0.4",
-        "request": "^2.88.2",
-        "sync-request": "^6.1.0"
+        "request": "^2.88.2"
     },
     "devDependencies": {
         "mocha": "5.0.0",
