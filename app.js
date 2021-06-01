@@ -15,7 +15,7 @@ var utils = require('./utils');
 var minerva_manager = require('bbop-manager-minerva'),
     barista_response = require('bbop-response-barista'),
     noctua_graph = require('bbop-graph-noctua').graph,
-    sync_engine = require('bbop-rest-manager').sync_request;
+    sync_engine = require('lpdev-bbop-rest-manager').sync_request;
 
 
 /**
