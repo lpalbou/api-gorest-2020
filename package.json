@@ -27,7 +27,8 @@
         "GO",
         "API",
         "REST",
-        "SAM"
+        "SAM",
+        "CAM"
     ],
     "author": "Laurent-Philippe Albou",
     "license": "BSD"
