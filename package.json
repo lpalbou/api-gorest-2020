@@ -7,9 +7,7 @@
         "aws-serverless-express": "3.1.3",
         "bbop-core": "0.0.5",
         "bbop-graph-noctua": "0.0.35",
-        "bbop-response-barista": "0.0.11",
         "bbop-rest-manager": "0.0.18",
-        "bbop-rest-response": "0.0.4",
         "express": "4.16.2",
         "lpadev-bbop-manager-minerva": "0.0.3",
         "request": "^2.88.2"

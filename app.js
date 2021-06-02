@@ -11,6 +11,7 @@ var sparqlModels = require('./queries/sparql-models'),
     sparqlSpecies = require('./queries/sparql-species');
 
 var utils = require('./utils');
+var barista_response = require('./response');
 
 // var minerva_manager = require('lpadev-bbop-manager-minerva'),
 //     noctua_graph = require('bbop-graph-noctua').graph,
