@@ -13,9 +13,9 @@ var sparqlModels = require('./queries/sparql-models'),
 var utils = require('./utils');
 
 // var minerva_manager = require('lpadev-bbop-manager-minerva'),
-//     barista_response = require('bbop-response-barista'),
 //     noctua_graph = require('bbop-graph-noctua').graph,
-//     sync_engine = require('bbop-rest-manager').sync_request;
+//     sync_engine = require('bbop-rest-manager').sync_request,
+//     barista_response = require('bbop-response-barista');
 
 
 /**
