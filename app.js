@@ -12,36 +12,36 @@ var sparqlModels = require('./queries/sparql-models'),
 
 var utils = require('./utils');
 
-var minerva_manager = require('lpadev-bbop-manager-minerva'),
-    barista_response = require('bbop-response-barista'),
-    noctua_graph = require('bbop-graph-noctua').graph,
-    sync_engine = require('bbop-rest-manager').sync_request;
+// var minerva_manager = require('lpadev-bbop-manager-minerva'),
+//     barista_response = require('bbop-response-barista'),
+//     noctua_graph = require('bbop-graph-noctua').graph,
+//     sync_engine = require('bbop-rest-manager').sync_request;
 
 
 /**
  * Initiate the BBOP communication layer with barista, to proxy it through this https endpoint
  * Note: this is a bad (and hopefully temporary solution) as barista is not https and I see no progress on that part.
  */
-function initBBOP() {
-  let minervaDefinitions = {
-    prod: "minerva_public",
-    dev: "minerva_public_dev"
-  };
+// function initBBOP() {
+//   let minervaDefinitions = {
+//     prod: "minerva_public",
+//     dev: "minerva_public_dev"
+//   };
 
-  let barista = {
-    prod: "http://barista.berkeleybop.org",
-    dev: "http://barista-dev.berkeleybop.org"
-  };
+//   let barista = {
+//     prod: "http://barista.berkeleybop.org",
+//     dev: "http://barista-dev.berkeleybop.org"
+//   };
 
-  let global_barista_location = barista["prod"];
-  let global_minerva_definition_name = minervaDefinitions["prod"];
-  let user_token = "";
+//   let global_barista_location = barista["prod"];
+//   let global_minerva_definition_name = minervaDefinitions["prod"];
+//   let user_token = "";
 
-  let engine = new sync_engine(barista_response);
-  engine.method('POST');
-  let bmanager = new minerva_manager(global_barista_location, global_minerva_definition_name, user_token, engine, "async");  
-  return bmanager;
-};
+//   let engine = new sync_engine(barista_response);
+//   engine.method('POST');
+//   let bmanager = new minerva_manager(global_barista_location, global_minerva_definition_name, user_token, engine, "async");  
+//   return bmanager;
+// };
 
 
 
@@ -266,19 +266,19 @@ app.get('/pmid/:id/models', function(req, res) {
 app.get('/noctua/:id', function(req, res) {
   let id = req.params.id;
 
-  console.log("asking for model: ", req.params.id);
+  // console.log("asking for model: ", id);
 
-  let bmanager = initBBOP();
-  bmanager.register('rebuild', (resp, man) => {
-    // console.log("rebuild: ", resp, man);
-    let graph = new noctua_graph();
-    graph.load_data_basic(resp.data());
-    // console.log("graph: ", graph);
-    res.json(graph);
-  });
+  // let bmanager = initBBOP();
+  // bmanager.register('rebuild', (resp, man) => {
+  //   let graph = new noctua_graph();
+  //   graph.load_data_basic(resp.data());
+  //   // console.log("graph: ", graph);
+  //   res.json(graph);
+  // });
 
-  let model = bmanager.get_model(req.params.id);  
-  // console.log("m: " , model);
+  // let model = bmanager.get_model(id);  
+
+  res.json({ "question" : id });
 
 });
 
