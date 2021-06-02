@@ -12,10 +12,10 @@ var sparqlModels = require('./queries/sparql-models'),
 
 var utils = require('./utils');
 
-var minerva_manager = require('bbop-manager-minerva'),
+var minerva_manager = require('lpadev-bbop-manager-minerva'),
     barista_response = require('bbop-response-barista'),
     noctua_graph = require('bbop-graph-noctua').graph,
-    sync_engine = require('lpdev-bbop-rest-manager').sync_request;
+    sync_engine = require('bbop-rest-manager').sync_request;
 
 
 /**
@@ -289,7 +289,7 @@ app.get('/noctua/:id', function(req, res) {
 module.exports = app
 
 // Uncomment if want to perform local test
-// var port = 8888;
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`)
-// })
+var port = 8888;
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
