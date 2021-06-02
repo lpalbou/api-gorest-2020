@@ -1,8 +1,7 @@
-var express = require('express'),
-    app = express(),
-    request = require('request');
+const express = require('express'),
+    app = express();
 
-var sparqlModels = require('./queries/sparql-models'),
+const sparqlModels = require('./queries/sparql-models'),
     sparqlGPs = require('./queries/sparql-gp'),
     sparqlGOs = require('./queries/sparql-go'),
     sparqlPMIDs = require('./queries/sparql-pmids'),
@@ -10,14 +9,24 @@ var sparqlModels = require('./queries/sparql-models'),
     sparqlUsers = require('./queries/sparql-users'),
     sparqlSpecies = require('./queries/sparql-species');
 
-var utils = require('./utils');
+const dbxrefs = require('@geneontology/dbxrefs');
+const utils = require('./utils');
+const GraphHandler = require('./graphHandler');
+const noctua_graph = require('bbop-graph-noctua').graph;
 
-var minerva_manager = require('lpadev-bbop-manager-minerva'),
-    noctua_graph = require('bbop-graph-noctua').graph,
-    sync_engine = require('bbop-rest-manager').sync_request;
-//     barista_response = require('bbop-response-barista');
+// const minerva_manager = require('lpadev-bbop-manager-minerva'),
+//     noctua_graph = require('bbop-graph-noctua').graph,
+//     sync_engine = require('bbop-rest-manager').sync_request;
+// //     barista_response = require('bbop-response-barista');
 
-var barista_response = require('./response');
+// const barista_response = require('./response');
+
+
+dbxrefs.init()
+.then(() => {
+  console.log("dbxrefs ready");  
+});
+
 
 
 /**
@@ -265,23 +274,143 @@ app.get('/pmid/:id/models', function(req, res) {
 //
 // ================================================================================
 
-app.get('/noctua/:id', function(req, res) {
+app.get('/gocam/:id/raw', function(req, res) {
   let id = req.params.id;
+  let idtrim = id.replace("gomodel:", "");
 
-  console.log("asking for model: ", id);
+  console.log("Asking for RAW model: ", id);
 
-  let bmanager = initBBOP();
-  bmanager.register('rebuild', (resp, man) => {
-    let graph = new noctua_graph();
-    graph.load_data_basic(resp.data());
-    // console.log("graph: ", graph);
+  let url = "http://barista.berkeleybop.org/api/minerva_public/m3Batch?token=&intention=query&requests=%5B%7B%22entity%22%3A%22model%22%2C%22operation%22%3A%22get%22%2C%22arguments%22%3A%7B%22model-id%22%3A%22gomodel%3A" + idtrim + "%22%7D%7D%5D";
+  console.log(url);
+  utils.getData(url)
+  .then(data => {
+    return data.json();
+  })
+  .then(data => {
+    data = data["data"];
     utils.addCORS(res);
-    res.json(graph);
-  });
-
-  let model = bmanager.get_model(id);  
-
+    res.json(data);  
+  })
 });
+
+app.get('/gocam/:id/activities', function(req, res) {
+  let id = req.params.id;
+  let idtrim = id.replace("gomodel:", "");
+
+  console.log("Asking for ACTIVITIES model: ", id);
+
+  let url = "http://barista.berkeleybop.org/api/minerva_public/m3Batch?token=&intention=query&requests=%5B%7B%22entity%22%3A%22model%22%2C%22operation%22%3A%22get%22%2C%22arguments%22%3A%7B%22model-id%22%3A%22gomodel%3A" + idtrim + "%22%7D%7D%5D";
+  console.log(url);
+  utils.getData(url)
+  .then(data => {
+    return data.json();
+  })
+  .then(data => {
+    data = data["data"];
+
+    let graph = new noctua_graph();
+    graph.load_data_basic(data);
+
+    // Prepare graph
+    graph.unfold();
+    graph.fold_go_noctua(this.relations_collapsible)
+
+    let ghandler = new GraphHandler(graph);
+    ghandler.setDBXrefs(dbxrefs);
+
+    let activities = ghandler.getAllActivities();
+    utils.addCORS(res);
+    res.json(activities);
+  });
+});
+
+
+app.get('/gocam/:id/enriched', function(req, res) {
+  let id = req.params.id;
+  let idtrim = id.replace("gomodel:", "");
+
+  console.log("Asking for ENRICHED model: ", id);
+
+  let url = "http://barista.berkeleybop.org/api/minerva_public/m3Batch?token=&intention=query&requests=%5B%7B%22entity%22%3A%22model%22%2C%22operation%22%3A%22get%22%2C%22arguments%22%3A%7B%22model-id%22%3A%22gomodel%3A" + idtrim + "%22%7D%7D%5D";
+  console.log(url);
+  utils.getData(url)
+  .then(data => {
+    return data.json();
+  })
+  .then(data => {
+    data = data["data"];
+
+    let graph = new noctua_graph();
+    graph.load_data_basic(data);
+
+    // Prepare graph
+    graph.unfold();
+    graph.fold_go_noctua(this.relations_collapsible)
+
+    let ghandler = new GraphHandler(graph);
+    ghandler.setDBXrefs(dbxrefs);
+
+    let activities = ghandler.getAllActivities();
+    ghandler.enrichActivities(activities)
+    .then(enrichedGraph => {
+      // console.log("ENRICHED: ", data);
+        utils.addCORS(res);
+        res.json(enrichedGraph);
+    });    
+
+  });
+});
+
+
+// VERSION BELOW IS USING THE BBOP COMMUNICATION LIBRARIES WHICH ESSENTIALLY DOESN T SERVE ANY PURPOSE
+// AND SLOW DOWN THE QUERIES.. LEAVING IT HERE WHILE TESTING DIRECT HTTP REQUESTS
+
+// app.get('/gocam/:id/graw', function(req, res) {
+//   let id = req.params.id;
+//   let idtrim = id.replace("gomodel:", "");
+
+//   console.log("Asking for RAW model: ", id);
+
+//   let bmanager = initBBOP();
+//   bmanager.register('rebuild', (resp, man) => {
+//     utils.addCORS(res);
+//     res.json(resp.data());
+//   });
+
+//   let model = bmanager.get_model(id);  
+// });
+
+
+// app.get('/gocam/:id/enriched', function(req, res) {
+//   let id = req.params.id;
+
+//   console.log("Asking for ENRICHED model: ", id);
+
+//   let bmanager = initBBOP();
+//   bmanager.register('rebuild', (resp, man) => {
+//     let graph = new noctua_graph();
+//     graph.load_data_basic(resp.data());
+
+//     // Prepare graph
+//     graph.unfold();
+//     graph.fold_go_noctua(this.relations_collapsible)
+
+//     let ghandler = new GraphHandler(graph);
+//     ghandler.setDBXrefs(dbxrefs);
+
+//     let activities = ghandler.getAllActivities();
+//     ghandler.enrichActivities(activities)
+//     .then(enrichedGraph => {
+//       // console.log("ENRICHED: ", data);
+//         utils.addCORS(res);
+//         res.json(enrichedGraph);
+//     });
+
+//   });
+
+//   let model = bmanager.get_model(id);  
+
+// });
 
 
 
@@ -290,7 +419,7 @@ app.get('/noctua/:id', function(req, res) {
 module.exports = app
 
 // Uncomment if want to perform local test
-// var port = 8888;
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`)
-// })
+var port = 8888;
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
