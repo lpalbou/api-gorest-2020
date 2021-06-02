@@ -1,8 +1,14 @@
 var request = require("request");
+const fetch = require('node-fetch');
 
 var config = require("./config");
 
 module.exports = {
+
+    getData(url) {
+        return fetch(url);
+    },
+
 
     /**
      * Generic Method to transform and send the transformed version of the SPARL Query (url)
