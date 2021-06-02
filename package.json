@@ -10,7 +10,6 @@
         "bbop-response-barista": "0.0.11",
         "bbop-rest-manager": "0.0.18",
         "express": "4.16.2",
-        "lpadev-bbop-manager-minerva": "0.0.3",
         "request": "^2.88.2"
     },
     "devDependencies": {
