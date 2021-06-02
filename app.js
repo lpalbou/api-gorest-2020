@@ -275,6 +275,7 @@ app.get('/noctua/:id', function(req, res) {
     let graph = new noctua_graph();
     graph.load_data_basic(resp.data());
     // console.log("graph: ", graph);
+    utils.addCORS(res);
     res.json(graph);
   });
 
