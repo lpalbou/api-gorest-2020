@@ -1,7 +1,7 @@
 {
     "name": "api-gorest",
     "description": "API to access GO and GO-CAM data from the Gene Ontology Consortium",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "dependencies": {
         "aws-serverless-express": "3.1.3",
