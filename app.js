@@ -419,7 +419,7 @@ app.get('/gocam/:id/enriched', function(req, res) {
 module.exports = app
 
 // Uncomment if want to perform local test
-var port = 8888;
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+// var port = 8888;
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`)
+// })
