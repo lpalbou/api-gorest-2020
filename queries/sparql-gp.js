@@ -113,7 +113,13 @@ module.exports = {
           negatively_regulates: positively_regulates: directly_regulates: directly_positively_regulates: directly_negatively_regulates:
           directly_activates: indirectly_activates: directly_inhibits: indirectly_inhibits: transitively_provides_input_for: 
           immediately_causally_upstream_of: directly_provides_input_for: }
-      
+
+        VALUES ?causal2 { causally_upstream_of_or_within: causally_upstream_of_or_within_negative_effect: causally_upstream_of_or_within_positive_effect: 
+          causally_upstream_of: causally_upstream_of_negative_effect: causally_upstream_of_positive_effect: regulates: 				
+          negatively_regulates: positively_regulates: directly_regulates: directly_positively_regulates: directly_negatively_regulates:
+          directly_activates: indirectly_activates: directly_inhibits: indirectly_inhibits: transitively_provides_input_for: 
+          immediately_causally_upstream_of: directly_provides_input_for: }
+            
         GRAPH ?gocam {
           ?gocam metago:graphType metago:noctuaCam .    
           ?s enabled_by: ?gpnode .    
@@ -121,7 +127,7 @@ module.exports = {
           ?gocam dc:title ?title .   
       
           ?ind1 ?causal ?ind2 .     
-          ?ind2 ?causal ?ind3 .
+          ?ind2 ?causal2 ?ind3 .
           
           ?ind1 enabled_by: ?gpnode1 .
           ?ind2 enabled_by: ?gpnode2 .
